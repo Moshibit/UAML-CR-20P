@@ -1,2 +1,3 @@
 Repositorio de la terea 1 de la UEA ciencia de redes.
-Alumno Erik juárez Guerrero.
+Alumno: Erik juárez Guerrero.
+Matricula: 2172040703
