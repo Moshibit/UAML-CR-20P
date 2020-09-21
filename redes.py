@@ -12,7 +12,7 @@ import random
 
 def numero_nodos(red): 
     """
-    Revibe un red y regresa el numero de nodos de ella.    
+    Recibe un red y regresa el número de nodos de ella.    
 
     Parámetros
     ----------
@@ -23,16 +23,16 @@ def numero_nodos(red):
     Excepción
     ---------
     TypeError
-        DESCRIPTION. Cuando no resive un diccionario como paramátro
+        Se lanza cuando no recibe un diccionario como parámetro
 
-    Regreas
-    -------
-    rv : TIPO. Entero
-         DESCRIPCCCIÓN. El numero de nodos de la red.
+    Valor de retorno
+    ----------------
+    rv : entero
+         El número de nodos de la red.
 
     """
 
-    # valida el paramtro que recice la funcion, puede lanzar una excepción
+    # valida el paramtro que recice la función
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
         
@@ -43,7 +43,7 @@ def numero_nodos(red):
 
 def calcula_grados(red):
     """
-    Revibe una red y regresa un diccionario con los grados de cada nodo
+    Recibe una red y regresa un diccionario con los grados de cada nodo
 
     Parámetros
     ----------
@@ -77,7 +77,7 @@ def calcula_grados(red):
 
 def grado_maximo(red):
     """
-    Revibe una red y regresa la llave del nodo con mayor grado
+    Recibe una red y regresa la llave del nodo con mayor grado
 
     Parámetros
     ----------
@@ -578,10 +578,10 @@ def grafica_distr_norm_salida(distr_norm):
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        DESCRIPCIÓN. Cuando no recibe un diccionario como parámetro.
 
-    Returns
-    -------
+    Valor de retorno
+    ----------------
     None.
         Se muestra la figura, pero el valor de retorno es None.
     """
@@ -605,18 +605,62 @@ def grafica_distr_norm_salida(distr_norm):
 ## Extras tarea 2 #############################################################
 
 def aristas(red):
+    """
+    Recibe un diccionario que representa una gráfica y regresa el número de 
+    aristas que tiene.
+
+    Parámetros
+    ----------
+    red : diccionario
+        Las llaves del diccionario son representan los nodos de la red y sus 
+        valores son conjuntos que representan conecciones.
+
+    Excepción
+    ---------
+    TypeError
+        Se lanza cuando no se recibe un diccionario como parametro.
+
+    Valor de retorno
+    ----------------
+    m : entero
+        Es el número de arista de la red que entro como parámetro.
+        
+    """
     
     # validación de parametros de entrada
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe densidad() tiene que ser un diccionario.")
-        
+       
+    # se calcula los grados de entrada de los nodos de la red
     deg_in = calcula_grados_de_entrada(red)
     
+    # se ocupa el agloritmo para saber las arista o enlaces de la red
     m = int( sum(list(deg_in.values())) / 2 )
-    return int(m)
+    return m
 
 
 def aristas_grafo_completo(n):
+    """
+    Resibe un número entero que es el número de nodos de un grafo del tipo K_n.
+
+    Parámetros
+    ----------
+    n : entero
+        El número de nodos en una gráfica completa.
+
+    Excepciones
+    -----------
+    TypeError
+        Se lanza cuando la función no recibe un entero
+    ValueError
+        Se lanza cuando el entero que recive es menor a 1
+
+    Valor de retorno
+    ----------------
+    m : entero
+        Es el número de arista de la de la gráfica completa.
+
+    """
 
     # validación del parámetro de entrada
     if type(n) is not int:
@@ -624,6 +668,7 @@ def aristas_grafo_completo(n):
     if n < 1:
         raise ValueError("el parámetro que recibe crea_un_grafo_completo() tiene que ser mayor a cero.")
     
+    # se ocupa el algoritmo
     m = int(n * (n - 1) / 2)
     
     return m
@@ -632,19 +677,71 @@ def aristas_grafo_completo(n):
 ## tarea 2 ####################################################################
 
 def densidad(red):
+    """
+    Recibe una red y regresa la densidad de ésta.
+
+    Parámetros
+    ----------
+    red : diccionario
+        Las llaves del diccionario son representan los nodos de la red y sus 
+        valores son conjuntos que representan conecciones.
+
+    Excepciones
+    -----------
+    TypeError
+        Se lanza cuando no recibe un diccionario como parámetro.
+
+    Valor de retorno
+    ----------------
+    d : flotante
+        la densidad de la red.
+
+    """
     
     # validación de parametros de entrada
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe densidad() tiene que ser un diccionario.")
 
+    # con el número de nodos se puden obtener información de las aristas del 
+    # gráfo y de su grágo completo
     v = numero_nodos(red)
+    
     m_g = aristas(red)
     m_kn = aristas_grafo_completo(v)
-    d = m_g / m_kn
+    
+    d = m_g / m_kn  # se calcula la densidad 
     
     return d
 
+
 def grafica_aleatoria(n, p):
+    """
+    Genera una gráfica aleatorea.
+
+    Parámetros
+    ----------
+    n : entero
+        El número de nodos de la gráfica. Tiene que ser un entero positivo 
+        mayor a cero.
+    p : flotante
+        la probabilidad de que los nodos se conecten. Tinene que ser tener que
+        ser mayor o igual a cero y ser menor o igual a 1.
+
+    Excepciones
+    -----------
+    TypeError
+        Se lanza cuando 'n' no es un entero, o 'p' no es un flotante.
+    ValueError
+        Se lanza cuando 'n' no es mayor a cero, o cuando 'p' no cumple la
+        condición 0 <= p <= 1.
+
+    Valor de retorno
+    ----------------
+    g : diccionario
+        El diccionario representa una gráfica, sus llaves representan los nodos
+        y los valores sus valores son conjuntos que representan conecciones.
+
+    """
     
     # validación de los parámetros de entrada
     
@@ -667,15 +764,15 @@ def grafica_aleatoria(n, p):
     for i in range(n):
         g[i] = set()
         
-    # cola con los nodos. es una lista comun pero se usara como cola
+    # cola con los nodos. es una lista común pero se usara como cola
     cola = [ ]
     for i in range(n):
         cola.append(i)
     # sacamos el primer elemento, no es útil
     cola.pop(0)
     
-    # hace ls conecciones de la gráfica aleatoriamente, n-1 es por que las 
-    # conecciones se haban hecho todas al tomar el penultimo nodo
+    # El bucle hace les conecciones de la gráfica aleatoriamente, n-1 es por 
+    # que las conecciones se habrán hecho todas al tomar el penultimo nodo
     for i in range(n-1):
 
         for j in cola:
@@ -685,7 +782,7 @@ def grafica_aleatoria(n, p):
                 g[i].add(j)
                 g[j].add(i)
                     
-        # sacamos el primer elemtno de la cola ya se han hecho sus conecciones
+        # sacamos el primer elemtno de la cola, ya se han hecho sus conecciones
         cola.pop(0)
         
     return g
@@ -730,7 +827,7 @@ print(densidad(graf_comp), end='\n\n')
 ## zona de pruebas
 ###############################################################################
 
-if __name__ != "__main__":
+if __name__ == "__main__":
 
     _amistades = {'Alicia':{'Beto','Carlos','Carmen','David','Mónica'},
                  'Beto':{'Alicia','Jorge'},
