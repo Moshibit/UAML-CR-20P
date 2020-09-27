@@ -16,29 +16,29 @@ def numero_nodos(red):
 
     Parámetros
     ----------
-    red : TIPO. diccionario
-          DESCRIPCCCIÓN. Las claves representan los nodos y los valores son 
-          conjunto de los nodos conectados.
+    red : Diccionario
+        Las claves representan los nodos y los valores son conjunto de los 
+        nodos conectados.
           
     Excepción
     ---------
     TypeError
         Se lanza cuando no recibe un diccionario como parámetro
 
-    Valor de retorno
-    ----------------
-    rv : entero
-         El número de nodos de la red.
+    Retorno
+    -------
+    n : Entero
+        El número de nodos de la red.
 
     """
 
-    # valida el paramtro que recice la función
+    # valida el parámetro que recice la función
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
         
     # mide la cantidad de nodos de la red
-    rv = len(red)
-    return rv
+    n = len(red)
+    return n
     
 
 def calcula_grados(red):
@@ -47,32 +47,32 @@ def calcula_grados(red):
 
     Parámetros
     ----------
-    red : TIPO. diccionario
-          DESCRIPCCCIÓN. Las claves representan los nodos y los valores son 
-          conjunto de los nodos conectados.
+    red : Diccionario
+        Las claves representan los nodos y los valores son conjunto de los 
+        nodos conectados.
           
     Excepción
     ---------
     TypeError
-        DESCRIPTION. Cuando no resive un diccionario como paramátro
+        Se lanza cuando no recibe un diccionario como parámetro
     
-    Regreas
+    Retorno
     -------
-    rv : TIPO. Diccionario
-         DESCRIPCCCIÓN. Las llaves representasn los nodos de la res y los 
-         valores son el grado de entrada del nodo
+    deg : Diccionario
+        Las llaves representasn los nodos de la res y los valores son el 
+        grado de entrada del nodo
 
     """
     
-    # valida el paramtro que recice la funcion, puede lanzar una excepción
+    # valida el parámetro que recice la función, puede lanzar una excepción
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
     
-    # Construlle un diccionario verificando el grado de los nodos de la red
-    rv = { }
-    for k, v in red.items():
-        rv[k] = len(v)
-    return rv
+    # Construye un diccionario verificando el grado de los nodos de la red
+    deg = dict()
+    for k, v in red.items(): # K-->nodo, v-->adyacencia
+        deg[k] = len(v)
+    return deg
 
 
 def grado_maximo(red):
@@ -81,59 +81,61 @@ def grado_maximo(red):
 
     Parámetros
     ----------
-    red : TIPO. diccionario
-          DESCRIPCCCIÓN. Las claves representan los nodos y los valores son 
-          conjunto de los nodos conectados.
+    red : Diccionario
+        Las claves representan los nodos y los valores son conjunto de los 
+        nodos conectados.
           
     Excepción
     ---------
     TypeError
-        DESCRIPTION. Cuando no resive un diccionario como paramátro
+        Se lanza Cuando no recibe un diccionario como paramátro
     
-    Regreas
+    Retorno
     -------
-    rv : TIPO. entero
-         DESCRIPCCCIÓN. el valor que tenga la llave de nodo con grado maxímo
+    deg_max : Entero
+         El valor que tenga la llave de nodo con grado máxímo
     """
-    # TODO: optimisar la función
     
-    # valida el paramtro que recice la funcion, puede lanzar una excepción
+    # valida el parámetro que recice la función, puede lanzar una excepción
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
- 
-    # obtiene un diccionario con los grados de cada nodo
-    d = calcula_grados(red)
+       
     
-    # busca en los valores del diccionario que valor es el máximo
-    rv = max(d.values())   
-    return rv
+    deg_max = 0
+    
+    # busca el grado máximo en la red
+    for v in red.values(): # v-->adyacencia
+        if len(v) > deg_max:
+            deg_max = len(v)
+        
+    return deg_max
 
 
 ## Práctica 1 #################################################################
 
 def crea_un_grafo_completo(n):
     """
-    Resibe un número entero para regresar un grafo del tipo K_n.
-    (todos los nodos estan relacionados entre ellos.)
+    Recibe un número entero para regresar un grafo del tipo K_n.
+    (todos los nodos están relacionados entre ellos.)
 
     Parámetros
     ----------
-    n : TIPO. entero mayor a cero
-        DESCRIPCIÓN. Es el número de nodos del grafo.
+    n : Entero 
+        Es el número de nodos del grafo. tiene que ser mayor a cero.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Caundo no se pasa un entero por parámetro.
+        Se lanza caundo no se pasa un entero como parámetro.
     ValueError
-        DESCRIPCIÓN. Cuando el entero no es mayor a cero.
+        Se lanza cuando el entero no es mayor a cero.
 
-    Valor de retorno
-    ----------------
-    k_n : TIPO. diccionario
-        DESCRIPCiÓN. Grafo K_n es un diccionario cuyos valores son conjuntos
-        que representan los enlaces a otros nodos, cada elementp del conjunto
-        es un nodo relacionado.
+    Retorno
+    -------
+    k_n : Diccionario
+        Grafo K_n es un diccionario cuyos valores son conjuntos que 
+        representan los enlaces a otros nodos, cada elemento del conjunto es 
+        un nodo relacionado.
 
     """
     
@@ -144,19 +146,15 @@ def crea_un_grafo_completo(n):
         raise ValueError("el parámetro que recibe crea_un_grafo_completo() tiene que ser mayor a cero.")
         
     # el grafo vacío
-    k_n = { }
+    k_n = dict()
    
     # contrucción del grafo
     for i in range(n):
         
-        # conjunto de nodos vacío, es el valor que se gurdará en la clave i 
-        # en el diccionario
-        ady = set()
-        
         # se contruye el conjunto de nodos adyasentes
-        for j in range(n):
-            if i != j:
-                ady.add(j)
+        ady = set(range(n))
+        ady.discard(i)
+
         k_n[i] = ady
     
     return k_n
@@ -170,20 +168,20 @@ def calcula_grados_de_entrada(d_grafica):
 
     Parámetros
     ----------
-    d_grafica : TIPO. diccionario
-        DESCRIPCIÓN. Gráfica dirigida, las claves representan los nodos y los 
-        valores son conjunto de los nodos a los que se conectan.
+    d_grafica : Diccionario
+        Gráfica dirigida, las claves representan los nodos y los valores son 
+        conjunto de los nodos a los que se conectan.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    deg_in : TIPO. diccionario
-        DESCRIPCIÓN. Las llaves de este diccionario son nodos y sus valores
-        son entero que indican el grado de entrada de los nodos.
+    Retorno
+    -------
+    deg_in : Diccionario
+        Las llaves de este diccionario son nodos y sus valores son enteros que
+        indican el grado de entrada de los nodos.
 
     """
     
@@ -192,14 +190,14 @@ def calcula_grados_de_entrada(d_grafica):
         raise TypeError("el parámetro que recibe calcula_grados_de_entrada() tiene que ser un diccionario.")
         
     # valor de retorno es diccionario vacío
-    deg_in = { }
+    deg_in = dict()
     
-    # contrucón de la tabla   
-    for k in d_grafica.keys():
+    # contrución de la tabla   
+    for k in d_grafica.keys(): # k-->nodo
         k_deg = 0
         
         # verifica que nodos se enlazan al nodo que recorre actualmente
-        for v in d_grafica.values():
+        for v in d_grafica.values(): # v-->nodos a los que entra
             ady = list(v)
             k_deg += ady.count(k)
             
@@ -216,23 +214,22 @@ def dist_grados_de_entrada(d_grafica):
 
     Parámetros
     ----------
-    d_grafica : TIPO. diccionario
-        DESCRIPCIÓN. Gráfica dirigida, las claves representan los nodos y los 
-        valores son conjunto de los nodos a los que se conectan.
+    d_grafica : Diccionario
+        Gráfica dirigida, las claves representan los nodos y los valores son 
+        conjunto de los nodos a los que se conectan.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    distr : TIPO. diccionario
-            DESCRIPCIÓN. Las llaves de este diccionario son grados de salida y 
-            sus valores son entero que indican la frecuencia de los grados de 
-            entrada.
+    Retorno
+    -------
+    distr : Diccionario
+            Las llaves de este diccionario son grados de salida y sus valores 
+            son entero que indican la frecuencia de los grados de entrada.
+            
     """
-    # TODO: ¿es posible optimisar? 
     
     # validación del parámetro de entrada
     if type(d_grafica) is not dict:
@@ -244,8 +241,8 @@ def dist_grados_de_entrada(d_grafica):
     # umbral de grados a buscar en la lista
     deg_max = max(deg_in)
     
-    # el valor de retorno es un diccionario vacío donde se gurdaran los datos
-    distr = { }
+    # el valor de retorno es un diccionario vacío donde se guardaran los datos
+    distr = dict()
     
     # recorre la lista para crear una tabla de distribución
     for i in range(deg_max + 1):
@@ -253,9 +250,6 @@ def dist_grados_de_entrada(d_grafica):
         # cuenta cuantos veces se encuentra el grado actual en la lista
         deg_count = deg_in.count(i)
         
-        # TODO ¿Es necesario omitir los que son cero?
-        # se resuelve agregando:
-        # if deg_count != 0:
         distr[i] = deg_count
     
     return distr
@@ -269,21 +263,22 @@ def dist_normalizada_entrada(d_grafica):
 
     Parámetros
     ----------
-    d_grafica : TIPO. diccionario
-        DESCRIPCIÓN. Gráfica dirigida, las claves representan los nodos y los 
-        valores son conjunto de los nodos a los que se conectan.
+    d_grafica : Diccionario
+        Gráfica dirigida, las claves representan los nodos y los valores son 
+        conjunto de los nodos a los que se conectan.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    distr_norm : TIPO. diccionario
-        DESCRIPCIÓN. Las llaves de este diccionario son grados de entrada y sus 
-        valores son flotantes que indican la frecuencia normalizada de los 
-        grados de entrada.
+    Retorno
+    -------
+    distr_norm : Diccionario
+        Las llaves de este diccionario son grados de entrada y sus valores son
+        flotantes que indican la frecuencia normalizada de los grados de 
+        entrada.
+        
     """
     
     # validación del parámetro de entrada
@@ -295,11 +290,11 @@ def dist_normalizada_entrada(d_grafica):
     total = sum(list(dist_in.values()))
     
     # el valor de retorno es un diccionario vacío donde se gurdaran los datos
-    distr_norm = { }
+    distr_norm = dict()
     
     # se recorre el diccionario de distribución para crear un diccionario con
     # la distrubución normalizada 
-    for k, v in dist_in.items():
+    for k, v in dist_in.items(): # k-->grado, v-->frecuencia 
         deg_in_norm = v/total
         distr_norm[k] = deg_in_norm
     
@@ -314,16 +309,16 @@ def grafica_distr_entrada(distr):
 
     Parámetros
     ----------
-    distr : dicccionario
-        DESCRIPCIÓN. El diccionario contiene como valores la distrubución de 
-        los grados de entrada nodales(enteros) de un gráfica dirigida.
+    distr : Dicccionario
+        El diccionario contiene como valores la distrubución de los grados de 
+        entrada nodales(enteros) de un gráfica dirigida.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanaza cuando no recibe un diccionario como parámetro.
 
-    Returns
+    Retorno
     -------
     None.
         Se muestra la figura, pero el valor de retorno es None.
@@ -353,17 +348,16 @@ def grafica_distr_norm_entrada(distr_norm):
 
     Parámetros
     ----------
-    distr : dicccionario
-        DESCRIPCIÓN. El diccionario contiene como valores la distrubución 
-        normalizada de los grados de entrada nodales(flotantes) de un gráfica 
-        dirigida.
+    distr : Dicccionario
+        El diccionario contiene como valores la distrubución normalizada de 
+        los grados de entrada nodales(flotantes) de un gráfica dirigida.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Returns
+    Retorno
     -------
     None.
         Se muestra la figura, pero el valor de retorno es None.
@@ -395,19 +389,19 @@ def calcula_grados_de_salida(d_grafica):
 
     Parámetros
     ----------
-    d_grafica : TIPO. diccionario
+    d_grafica : Diccionario
         DESCRIPCIÓN. Gráfica dirigida, las claves representan los nodos y los 
         valores son conjunto de los nodos a los que se conectan.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    deg_out : TIPO. diccionario
-        DESCRIPCIÓN. Las llaves de este diccionario son nodos y sus valores
+    Retorno
+    -------
+    deg_out : Diccionario
+        Las llaves de este diccionario son nodos y sus valores
         son entero que indican el grado de salida de los nodos.
 
     """
@@ -417,7 +411,7 @@ def calcula_grados_de_salida(d_grafica):
         raise TypeError("el parámetro que recibe calcula_grados_de_salida() tiene que ser un diccionario.")
         
     # el valor de retorno es un diccionario vacío donde se gurdaran los datos
-    deg_out = { }
+    deg_out = dict()
         
     # contrucón de la tabla   
     for k, v in d_grafica.items():
@@ -435,24 +429,23 @@ def dist_grados_de_salida(d_grafica):
 
     Parámetros
     ----------
-    d_grafica : TIPO. diccionario
-        DESCRIPCIÓN. Gráfica dirigida, las claves representan los nodos y los 
-        valores son conjunto de los nodos a los que se conectan.
+    d_grafica : Diccionario
+        Gráfica dirigida, las claves representan los nodos y los valores 
+        son conjunto de los nodos a los que se conectan.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    distr : TIPO. diccionario
-        DESCRIPCIÓN. Las llaves de este diccionario son grados de salida y sus 
-        val ores son entero que indican la frecuencia de los grados de salida.
+    Retorno
+    -------
+    distr : Diccionario
+        Las llaves de este diccionario son grados de salida y sus valores son 
+        entero que indican la frecuencia de los grados de salida.
         
     """
-    # TODO: ¿es posible optimisar? 
-    
+
     # validación del parámetro de entrada
     if type(d_grafica) is not dict:
         raise TypeError("el parámetro que recibe dist_grados_de_salida() tiene que ser un diccionario.")
@@ -464,7 +457,7 @@ def dist_grados_de_salida(d_grafica):
     deg_max = max(deg_out) 
     
     # el valor de retorno es un diccionario vacío donde se gurdaran los datos
-    distr = { }
+    distr = dict()
     
     # recorre la lista para crear una tabla de distribución
     for i in range(deg_max + 1):
@@ -472,7 +465,6 @@ def dist_grados_de_salida(d_grafica):
         # cuenta cuantos veces se encuentra el grado actual en la lista
         deg_count = deg_out.count(i)
         
-        # TODO ¿Es necesario omitir los que son cero?
         # se resuelve agregando:
         # if deg_count != 0:
         distr[i] = deg_count
@@ -488,21 +480,22 @@ def dist_normalizada_salida(d_grafica):
 
     Parámetros
     ----------
-    d_grafica : TIPO. diccionario
-        DESCRIPCIÓN. Gráfica dirigida, las claves representan los nodos y los 
-        valores son conjunto de los nodos a los que se conectan.
+    d_grafica : Diccionario
+        Gráfica dirigida, las claves representan los nodos y los valores son 
+        conjunto de los nodos a los que se conectan.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    distr_norm : TIPO. diccionario
-        DESCRIPCIÓN. Las llaves de este diccionario son grados de salida y sus 
-        valores son flotantes que indican la frecuencia normalizada de los 
-        grados de salida.
+    Retorno
+    -------
+    distr_norm : Diccionario
+        Las llaves de este diccionario son grados de salida y sus valores son 
+        flotantes que indican la frecuencia normalizada de los grados de 
+        salida.
+        
     """
     
     # validación del parámetro de entrada
@@ -514,7 +507,7 @@ def dist_normalizada_salida(d_grafica):
     total = sum(list(dist_out.values()))
     
     # el valor de retorno es un diccionario vacío donde se gurdaran los datos
-    distr_norm = { }
+    distr_norm = dict()
     
     # se recorre el diccionario de distribución para crear un diccionario con
     # la distrubución normalizada 
@@ -532,19 +525,20 @@ def grafica_distr_salida(distr):
 
     Parámetros
     ----------
-    distr : dicccionario
-        DESCRIPCIÓN. El diccionario contiene como valores la distrubución de 
-        los grados de salida nodales(enteros) de un gráfica dirigida.
+    distr : Dicccionario
+        El diccionario contiene como valores la distrubución de los grados de 
+        salida nodales(enteros) de un gráfica dirigida.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no resive un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Returns
+    Retorno
     -------
     None.
         Se muestra la figura, pero el valor de retorno es None.
+        
     """
     
     # validación del parámetro de entrada
@@ -570,20 +564,20 @@ def grafica_distr_norm_salida(distr_norm):
 
     Parámetros
     ----------
-    distr : dicccionario
-        DESCRIPCIÓN. El diccionario contiene como valores la distrubución 
-        normalizada de los grados de salida nodales(flotantes) de un gráfica 
-        dirigida.
+    distr : Dicccionario
+        El diccionario contiene como valores la distrubución normalizada de 
+        los grados de salida nodales(flotantes) de un gráfica dirigida.
 
     Excepción
     ---------
     TypeError
-        DESCRIPCIÓN. Cuando no recibe un diccionario como parámetro.
+        Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
+    Retorno
+    -------
     None.
         Se muestra la figura, pero el valor de retorno es None.
+        
     """
     
     # validación del parámetro de entrada
@@ -611,23 +605,23 @@ def aristas(red):
 
     Parámetros
     ----------
-    red : diccionario
+    red : Diccionario
         Las llaves del diccionario son representan los nodos de la red y sus 
         valores son conjuntos que representan conecciones.
 
     Excepción
     ---------
     TypeError
-        Se lanza cuando no se recibe un diccionario como parametro.
+        Se lanza cuando no se recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    m : entero
+    Retorno
+    -------
+    m : Entero
         Es el número de arista de la red que entro como parámetro.
         
     """
     
-    # validación de parametros de entrada
+    # validación de parámetros de entrada
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe densidad() tiene que ser un diccionario.")
        
@@ -641,11 +635,11 @@ def aristas(red):
 
 def aristas_grafo_completo(n):
     """
-    Resibe un número entero que es el número de nodos de un grafo del tipo K_n.
+    Recibe un número entero que es el número de nodos de un grafo del tipo K_n.
 
     Parámetros
     ----------
-    n : entero
+    n : Entero
         El número de nodos en una gráfica completa.
 
     Excepciones
@@ -653,11 +647,11 @@ def aristas_grafo_completo(n):
     TypeError
         Se lanza cuando la función no recibe un entero
     ValueError
-        Se lanza cuando el entero que recive es menor a 1
+        Se lanza cuando el entero que recibe es menor a 1
 
-    Valor de retorno
-    ----------------
-    m : entero
+    Retorno
+    -------
+    m : Entero
         Es el número de arista de la de la gráfica completa.
 
     """
@@ -682,7 +676,7 @@ def densidad(red):
 
     Parámetros
     ----------
-    red : diccionario
+    red : Diccionario
         Las llaves del diccionario son representan los nodos de la red y sus 
         valores son conjuntos que representan conecciones.
 
@@ -691,14 +685,14 @@ def densidad(red):
     TypeError
         Se lanza cuando no recibe un diccionario como parámetro.
 
-    Valor de retorno
-    ----------------
-    d : flotante
+    Retorno
+    -------
+    d : Flotante
         la densidad de la red.
 
     """
     
-    # validación de parametros de entrada
+    # validación de parámetros de entrada
     if type(red) is not dict:
         raise TypeError("el parámetro que recibe densidad() tiene que ser un diccionario.")
 
@@ -716,14 +710,14 @@ def densidad(red):
 
 def grafica_aleatoria(n, p):
     """
-    Genera una gráfica aleatorea.
+    Genera una gráfica aleatoria.
 
     Parámetros
     ----------
-    n : entero
+    n : Entero
         El número de nodos de la gráfica. Tiene que ser un entero positivo 
         mayor a cero.
-    p : flotante
+    p : Flotante
         la probabilidad de que los nodos se conecten. Tinene que ser tener que
         ser mayor o igual a cero y ser menor o igual a 1.
 
@@ -735,9 +729,9 @@ def grafica_aleatoria(n, p):
         Se lanza cuando 'n' no es mayor a cero, o cuando 'p' no cumple la
         condición 0 <= p <= 1.
 
-    Valor de retorno
-    ----------------
-    g : diccionario
+    Retorno
+    -------
+    g : Diccionario
         El diccionario representa una gráfica, sus llaves representan los nodos
         y los valores sus valores son conjuntos que representan conecciones.
 
@@ -757,24 +751,23 @@ def grafica_aleatoria(n, p):
     if not 0 <= p <= 1:
         raise ValueError("el parámetro 'p' recibe grafica_aleatoria() tiene que valer entre 0.0 y 1.0.")
     
-    # TODO mejorar el algoritmo. no me gusta la cantidad de 'for'
+    # TODO optimizar. no me gusta la cantidad de 'for'
     
     # la gráfica vacía, cada nodo tiene una lista de adyacencia vacia
-    g = { }
+    g = dict()
     for i in range(n):
-        g[i] = set()
+       g[i] = set()
         
     # cola con los nodos. es una lista común pero se usara como cola
-    cola = [ ]
-    for i in range(n):
-        cola.append(i)
+    cola = list(range(n))
+   
     # sacamos el primer elemento, no es útil
     cola.pop(0)
     
     # El bucle hace les conecciones de la gráfica aleatoriamente, n-1 es por 
     # que las conecciones se habrán hecho todas al tomar el penultimo nodo
     for i in range(n-1):
-
+        
         for j in cola:
             
             a = random.random()
@@ -788,43 +781,13 @@ def grafica_aleatoria(n, p):
     return g
 
 ###############################################################################
-## zona de tarea/práctica actual
+## tarea/práctica actual
 ###############################################################################
-
-print("***Gráficas aleatorias con n=10 y p=0.3***",end='\n\n')
-n = 10
-p = 0.3
-for i in range(5):
-    
-    graf_al = grafica_aleatoria(n, p)
-    print("Gráfica", i + 1,":")
-    print(graf_al)
-    print("Su densidad es:", end=" ")
-    print(densidad(graf_al), end='\n\n')
-
-print("***Gráficas aleatorias con n=10 y p=0.6***",end='\n\n')
-n = 10
-p = 0.6
-for i in range(5):
-    
-    graf_al = grafica_aleatoria(n, p)
-    print("Gráfica", i + 1,":")
-    print(graf_al)
-    print("Su densidad es:", end=" ")
-    print(densidad(graf_al), end='\n\n')
-
-n = 5
-p = 1.0
-graf_comp = grafica_aleatoria(n, p)
-print("Gráfica completa :")
-print(graf_comp)
-print("Su densidad es:", end=" ")
-print(densidad(graf_comp), end='\n\n')
 
 
 
 ###############################################################################
-## zona de pruebas
+## pruebas
 ###############################################################################
 
 if __name__ == "__main__":
@@ -898,9 +861,12 @@ if __name__ == "__main__":
     print("Prueba de aristas_grafo_completo")
     print(aristas_grafo_completo(5), end='\n\n')
 
-    ## pruebas tarea ----------------------------------------------------------
+    ## pruebas tarea 2 --------------------------------------------------------
     print("Prueba de densidad")
     print(densidad(_amistades), end='\n\n')
     
     print("Prueba de grafica_aleatoria")
-    print(grafica_aleatoria(10, 0.02), end='\n\n')
+    print(grafica_aleatoria(5, 0.5), end='\n\n')
+    
+    ## pruebas tarea 3 --------------------------------------------------------
+    
