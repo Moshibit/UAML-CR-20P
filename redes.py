@@ -36,11 +36,12 @@ def numero_nodos(red):
 
     # valida el parámetro que recice la función
     if not isinstance(red, dict):
-        raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
+        raise TypeError("el parámetro que recibe numero_nodos() tiene que " +
+                        " ser un diccionario")
 
     # mide la cantidad de nodos de la red
-    n = len(red)
-    return n
+    nodos = len(red)
+    return nodos
 
 
 def calcula_grados(red):
@@ -68,12 +69,13 @@ def calcula_grados(red):
 
     # valida el parámetro que recice la función, puede lanzar una excepción
     if not isinstance(red, dict):
-        raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
+        raise TypeError("el parámetro que recibe numero_nodos() tiene que " +
+                        "ser un diccionario")
 
     # Construye un diccionario verificando el grado de los nodos de la red
     deg = dict()
-    for k, v in red.items():  # K-->nodo, v-->adyacencia
-        deg[k] = len(v)
+    for nodo, ady in red.items():
+        deg[nodo] = len(ady)
     return deg
 
 
@@ -100,14 +102,15 @@ def grado_maximo(red):
 
     # valida el parámetro que recice la función, puede lanzar una excepción
     if not isinstance(red, dict):
-        raise TypeError("el parámetro que recibe numero_nodos() tiene que ser un diccionario")
+        raise TypeError("el parámetro que recibe numero_nodos() tiene que " +
+                        "ser un diccionario")
 
     deg_max = 0
 
     # busca el grado máximo en la red
-    for v in red.values():  # v-->adyacencia
-        if len(v) > deg_max:
-            deg_max = len(v)
+    for ady in red.values():
+        if len(ady) > deg_max:
+            deg_max = len(ady)
 
     return deg_max
 
@@ -115,14 +118,14 @@ def grado_maximo(red):
 # Práctica 1 ==================================================================
 
 
-def crea_un_grafo_completo(n):
+def crea_un_grafo_completo(nodos):
     """
     Recibe un número entero para regresar un grafo del tipo K_n.
     (todos los nodos están relacionados entre ellos.)
 
     Parámetros
     ----------
-    n : Entero
+    nodos : Entero
         Es el número de nodos del grafo. tiene que ser mayor a cero.
 
     Excepción
@@ -142,22 +145,26 @@ def crea_un_grafo_completo(n):
     """
 
     # validación del parámetro de entrada
-    if not isinstance(n, int):
-        raise TypeError("el parámetro que recibe crea_un_grafo_completo() tiene que ser un entero positivo.")
-    if n < 1:
-        raise ValueError("el parámetro que recibe crea_un_grafo_completo() tiene que ser mayor a cero.")
+    if not isinstance(nodos, int):
+        raise TypeError("el parámetro que recibe " +
+                        "crea_un_grafo_completo() tiene que ser un entero " +
+                        "positivo.")
+    if nodos < 1:
+        raise ValueError("el parámetro que recibe " +
+                         "crea_un_grafo_completo() tiene que ser mayor a " +
+                         "cero.")
 
     # el grafo vacío
     k_n = dict()
 
     # contrucción del grafo
-    for i in range(n):
+    for nodo in range(nodos):
 
         # se contruye el conjunto de nodos adyasentes
-        ady = set(range(n))
-        ady.discard(i)
+        ady = set(range(nodos))
+        ady.discard(nodo)
 
-        k_n[i] = ady
+        k_n[nodo] = ady
 
     return k_n
 
@@ -189,21 +196,22 @@ def calcula_grados_de_entrada(d_grafica):
 
     # validación del parámetro de entrada
     if not isinstance(d_grafica, dict):
-        raise TypeError("el parámetro que recibe calcula_grados_de_entrada() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "calcula_grados_de_entrada() tiene que ser un " +
+                        "diccionario.")
 
     # valor de retorno es diccionario vacío
     deg_in = dict()
 
     # contrución de la tabla
-    for k in d_grafica.keys():  # k-->nodo
+    for nodo in d_grafica.keys():
         k_deg = 0
 
         # verifica que nodos se enlazan al nodo que recorre actualmente
-        for v in d_grafica.values():  # v-->nodos a los que entra
-            ady = list(v)
-            k_deg += ady.count(k)
+        for ady in d_grafica.values():  # v-->nodos a los que entra
+            k_deg += list(ady).count(nodo)
 
-        deg_in[k] = k_deg
+        deg_in[nodo] = k_deg
 
     return deg_in
 
@@ -235,7 +243,9 @@ def dist_grados_de_entrada(d_grafica):
 
     # validación del parámetro de entrada
     if not isinstance(d_grafica, dict):
-        raise TypeError("el parámetro que recibe dist_grados_de_entrada() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "dist_grados_de_entrada() tiene que ser un " +
+                        "diccionario.")
 
     # obtiene la lista de los grados de entrada
     deg_in = list(calcula_grados_de_entrada(d_grafica).values())
@@ -247,12 +257,12 @@ def dist_grados_de_entrada(d_grafica):
     distr = dict()
 
     # recorre la lista para crear una tabla de distribución
-    for i in range(deg_max + 1):
+    for grado in range(deg_max + 1):
 
         # cuenta cuantos veces se encuentra el grado actual en la lista
-        deg_count = deg_in.count(i)
+        deg_count = deg_in.count(grado)
 
-        distr[i] = deg_count
+        distr[grado] = deg_count
 
     return distr
 
@@ -285,7 +295,9 @@ def dist_normalizada_entrada(d_grafica):
 
     # validación del parámetro de entrada
     if not isinstance(d_grafica, dict):
-        raise TypeError("el parámetro que recibe dist_normalizada_entrada() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "dist_normalizada_entrada() tiene que ser un " +
+                        "diccionario.")
 
     # distribución de los grados de entrada
     dist_in = dist_grados_de_entrada(d_grafica)
@@ -296,9 +308,9 @@ def dist_normalizada_entrada(d_grafica):
 
     # se recorre el diccionario de distribución para crear un diccionario con
     # la distrubución normalizada
-    for k, v in dist_in.items():  # k-->grado, v-->frecuencia
-        deg_in_norm = v/total
-        distr_norm[k] = deg_in_norm
+    for grado, frecuencia in dist_in.items():
+        deg_in_norm = frecuencia/total
+        distr_norm[grado] = deg_in_norm
 
     return distr_norm
 
@@ -328,7 +340,8 @@ def grafica_distr_entrada(distr):
 
     # validación del parámetro de entrada
     if not isinstance(distr, dict):
-        raise TypeError("el parámetro que recibe grafica_distr_entrada() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe grafica_distr_entrada() " +
+                        "tiene que ser un diccionario.")
 
     valores_x = list(distr.keys())
     valores_y = list(distr.values())
@@ -365,7 +378,9 @@ def grafica_distr_norm_entrada(distr_norm):
 
     # validación del parámetro de entrada
     if not isinstance(distr_norm, dict):
-        raise TypeError("el parámetro que recibe grafica_distr_norm_entrada() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "grafica_distr_norm_entrada() tiene que ser un " +
+                        "diccionario.")
 
     valores_x = list(distr_norm.keys())
     valores_y = list(distr_norm.values())
@@ -407,16 +422,19 @@ def calcula_grados_de_salida(d_grafica):
 
     # validación del parámetro de entrada
     if not isinstance(d_grafica, dict):
-        raise TypeError("el parámetro que recibe calcula_grados_de_salida() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "calcula_grados_de_salida() tiene que ser un " +
+                        "diccionario.")
 
     # el valor de retorno es un diccionario vacío donde se gurdaran los datos
     deg_out = dict()
 
-    # contrucón de la tabla
-    for k, v in d_grafica.items():
+    # contrución de la tabla
+    for nodo, ady in d_grafica.items():
 
-        # verificacada a cuantos nodos se enlaza al nodo que recorre actualmente
-        deg_out[k] = len(v)
+        # verificacada a cuantos nodos se enlaza al nodo que recorre
+        # actualmente
+        deg_out[nodo] = len(ady)
 
     return deg_out
 
@@ -448,7 +466,8 @@ def dist_grados_de_salida(d_grafica):
 
     # validación del parámetro de entrada
     if not isinstance(d_grafica, dict):
-        raise TypeError("el parámetro que recibe dist_grados_de_salida() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe dist_grados_de_salida() " +
+                        "tiene que ser un diccionario.")
 
     # obtiene la lista de los grados de entrada
     deg_out = list(calcula_grados_de_salida(d_grafica).values())
@@ -460,14 +479,11 @@ def dist_grados_de_salida(d_grafica):
     distr = dict()
 
     # recorre la lista para crear una tabla de distribución
-    for i in range(deg_max + 1):
+    for grado in range(deg_max + 1):
 
         # cuenta cuantos veces se encuentra el grado actual en la lista
-        deg_count = deg_out.count(i)
-
-        # se resuelve agregando:
-        # if deg_count != 0:
-        distr[i] = deg_count
+        deg_count = deg_out.count(grado)
+        distr[grado] = deg_count
 
     return distr
 
@@ -500,7 +516,9 @@ def dist_normalizada_salida(d_grafica):
 
     # validación del parámetro de entrada
     if not isinstance(d_grafica, dict):
-        raise TypeError("el parámetro que recibe dist_normalizada_salida() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "dist_normalizada_salida() tiene que ser un " +
+                        "diccionario.")
 
     # distribución de los grados de salida
     dist_out = dist_grados_de_salida(d_grafica)
@@ -511,9 +529,9 @@ def dist_normalizada_salida(d_grafica):
 
     # se recorre el diccionario de distribución para crear un diccionario con
     # la distrubución normalizada
-    for k, v in dist_out.items():
-        deg_out_norm = v/total
-        distr_norm[k] = deg_out_norm
+    for grado, frecuencia in dist_out.items():
+        deg_out_norm = frecuencia/total
+        distr_norm[grado] = deg_out_norm
 
     return distr_norm
 
@@ -543,7 +561,8 @@ def grafica_distr_salida(distr):
 
     # validación del parámetro de entrada
     if not isinstance(distr, dict):
-        raise TypeError("el parámetro que recibe grafica_distr_salida() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe grafica_distr_salida() " +
+                        "tiene que ser un diccionario.")
 
     valores_x = list(distr.keys())
     valores_y = list(distr.values())
@@ -581,7 +600,9 @@ def grafica_distr_norm_salida(distr_norm):
 
     # validación del parámetro de entrada
     if not isinstance(distr_norm, dict):
-        raise TypeError("el parámetro que recibe grafica_distr_norm_salida() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe " +
+                        "grafica_distr_norm_salida() tiene que ser un " +
+                        "diccionario.")
 
     valores_x = list(distr_norm.keys())
     valores_y = list(distr_norm.values())
@@ -614,24 +635,25 @@ def aristas(red):
 
     Retorno
     -------
-    m : Entero
+    ari : Entero
         Es el número de arista de la red que entro como parámetro.
 
     """
 
     # validación de parámetros de entrada
     if not isinstance(red, dict):
-        raise TypeError("el parámetro que recibe densidad() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe densidad() tiene que ser " +
+                        "un diccionario.")
 
     # se calcula los grados de entrada de los nodos de la red
     deg_in = calcula_grados_de_entrada(red)
 
     # se ocupa el agloritmo para saber las arista o enlaces de la red
-    m = int(sum(list(deg_in.values())) / 2)
-    return m
+    ari = int(sum(list(deg_in.values())) / 2)
+    return ari
 
 
-def aristas_grafo_completo(n):
+def aristas_grafo_completo(nodos):
     """
     Recibe un número entero que es el número de nodos de un grafo del tipo K_n.
 
@@ -649,21 +671,25 @@ def aristas_grafo_completo(n):
 
     Retorno
     -------
-    m : Entero
+    ari : Entero
         Es el número de arista de la de la gráfica completa.
 
     """
 
     # validación del parámetro de entrada
-    if not isinstance(n, int):
-        raise TypeError("el parámetro que recibe crea_un_grafo_completo() tiene que ser un entero positivo.")
-    if n < 1:
-        raise ValueError("el parámetro que recibe crea_un_grafo_completo() tiene que ser mayor a cero.")
+    if not isinstance(nodos, int):
+        raise TypeError("el parámetro que recibe " +
+                        "crea_un_grafo_completo() tiene que ser un entero " +
+                        "positivo.")
+    if nodos < 1:
+        raise ValueError("el parámetro que recibe " +
+                         "crea_un_grafo_completo() tiene que ser mayor a " +
+                         "cero.")
 
     # se ocupa el algoritmo
-    m = int(n * (n - 1) / 2)
+    ari = int(nodos * (nodos - 1) / 2)
 
-    return m
+    return ari
 
 
 # tarea 2 =====================================================================
@@ -692,30 +718,31 @@ def densidad(red):
 
     # validación de parámetros de entrada
     if not isinstance(red, dict):
-        raise TypeError("el parámetro que recibe densidad() tiene que ser un diccionario.")
+        raise TypeError("el parámetro que recibe densidad() tiene que ser " +
+                        "un diccionario.")
 
     # con el número de nodos se puden obtener información de las aristas del
     # gráfo y de su grágo completo
-    v = numero_nodos(red)
+    nodos = numero_nodos(red)
 
     m_g = aristas(red)
-    m_kn = aristas_grafo_completo(v)
+    m_kn = aristas_grafo_completo(nodos)
 
-    d = m_g / m_kn  # se calcula la densidad
+    dens = m_g / m_kn  # se calcula la densidad
 
-    return d
+    return dens
 
 
-def grafica_aleatoria(n, p):
+def grafica_aleatoria(nodos, probabilidad):
     """
     Genera una gráfica aleatoria.
 
     Parámetros
     ----------
-    n : Entero
+    nodos : Entero
         El número de nodos de la gráfica. Tiene que ser un entero positivo
         mayor a cero.
-    p : Flotante
+    probabilidad : Flotante
         la probabilidad de que los nodos se conecten. Tinene que ser tener que
         ser mayor o igual a cero y ser menor o igual a 1.
 
@@ -729,7 +756,7 @@ def grafica_aleatoria(n, p):
 
     Retorno
     -------
-    g : Diccionario
+    graf_aleat : Diccionario
         El diccionario representa una gráfica, sus llaves representan los nodos
         y los valores sus valores son conjuntos que representan conecciones.
 
@@ -738,44 +765,44 @@ def grafica_aleatoria(n, p):
     # validación de los parámetros de entrada
 
     # validación de n
-    if not isinstance(n, int):
-        raise TypeError("el parámetro 'n' recibe grafica_aleatoria() tiene que ser un entero positivo.")
-    if n < 1:
-        raise ValueError("el parámetro 'n' recibe grafica_aleatoria() tiene que ser mayor a cero.")
+    if not isinstance(nodos, int):
+        raise TypeError("el parámetro 'n' recibe grafica_aleatoria() tiene " +
+                        "que ser un entero positivo.")
+    if nodos < 1:
+        raise ValueError("el parámetro 'n' recibe grafica_aleatoria() " +
+                         "tiene que ser mayor a cero.")
 
     # validación de p
-    if not isinstance(p, float):
-        raise TypeError("el parámetro 'p' recibe grafica_aleatoria() tiene que ser un flotante positivo.")
-    if not 0 <= p <= 1:
-        raise ValueError("el parámetro 'p' recibe grafica_aleatoria() tiene que valer entre 0.0 y 1.0.")
+    if not isinstance(probabilidad,  float):
+        raise TypeError("el parámetro 'p' recibe grafica_aleatoria() tiene " +
+                        "que ser un flotante positivo.")
+    if not 0 <= probabilidad <= 1:
+        raise ValueError("el parámetro 'p' recibe grafica_aleatoria() " +
+                         "tiene que valer entre 0.0 y 1.0.")
 
-    # TODO: optimizar
     # la gráfica vacía, cada nodo tiene una lista de adyacencia vacia
-    g = dict()
-    for i in range(n):
-        g[i] = set()
+    graf_aleat = dict()
+    for nodo in range(nodos):
+        graf_aleat[nodo] = set()
 
     # cola con los nodos. es una lista común pero se usara como cola
-    cola = list(range(n))
-
-    # sacamos el primer elemento, no es útil
-    cola.pop(0)
+    nodos_destino = list(range(1, nodos))
 
     # El bucle hace les conecciones de la gráfica aleatoriamente, n-1 es por
     # que las conecciones se habrán hecho todas al tomar el penultimo nodo
-    for i in range(n-1):
+    for nodo_origen in range(nodos-1):
 
-        for j in cola:
+        for nodo_destino in nodos_destino:
 
-            a = random.random()
-            if a < p:
-                g[i].add(j)
-                g[j].add(i)
+            aleatorio = random.random()
+            if aleatorio < probabilidad:
+                graf_aleat[nodo_origen].add(nodo_destino)
+                graf_aleat[nodo_destino].add(nodo_origen)
 
         # sacamos el primer elemtno de la cola, ya se han hecho sus conecciones
-        cola.pop(0)
+        nodos_destino.pop(0)
 
-    return g
+    return graf_aleat
 
 # =============================================================================
 # tarea/práctica actual
@@ -787,6 +814,7 @@ def grafica_aleatoria(n, p):
 
 if __name__ == "__main__":
 
+    # una gráfica
     _amistades = {'Alicia': {'Beto', 'Carlos', 'Carmen', 'David', 'Mónica'},
                   'Beto': {'Alicia', 'Jorge'},
                   'Carlos': {'Alicia', 'David', 'Mónica'},
@@ -798,6 +826,7 @@ if __name__ == "__main__":
                   'Mónica': {'Alicia', 'Carlos', 'Carmen'},
                   'Rosa': {'Enrique', 'Irene', 'Jorge'}}
 
+    # una gráfica dirigida
     _graf1 = {1: {2}, 2: {4}, 3: {2}, 4: {1, 3, 5}, 5: {2, 4, 6}, 6: {1}}
 
     # pruebas tarea 1 --------------------------------------------------------
@@ -824,10 +853,10 @@ if __name__ == "__main__":
     print(dist_normalizada_entrada(_graf1), end='\n\n')
 
     print("Prueba de grafica_distr_entrada")
-    # print(grafica_distr_entrada(dist_grados_de_entrada(_graf1)), end='\n\n')
+    print(grafica_distr_entrada(dist_grados_de_entrada(_graf1)), end='\n\n')
 
     print("Prueba de grafica_distr_entrada")
-    # print(grafica_distr_norm_entrada(dist_normalizada_entrada(_graf1)), end='')
+    print(grafica_distr_norm_entrada(dist_normalizada_entrada(_graf1)), end='')
     print("")
 
     # pruebas práctica 1  extras ----------------------------------------------
@@ -841,10 +870,10 @@ if __name__ == "__main__":
     print(dist_normalizada_salida(_graf1), end='\n\n')
 
     print("Prueba de grafica_distr_salida")
-    # print(grafica_distr_salida(dist_grados_de_salida(_graf1)), end='\n\n')
+    print(grafica_distr_salida(dist_grados_de_salida(_graf1)), end='\n\n')
 
     print("Prueba de grafica_distr_entrada")
-    # print(grafica_distr_norm_salida(dist_normalizada_salida(_graf1)), end='')
+    print(grafica_distr_norm_salida(dist_normalizada_salida(_graf1)), end='')
     print("")
 
     # pruebas tarea 2 extras -------------------------------------------------
@@ -860,4 +889,4 @@ if __name__ == "__main__":
     print(densidad(_amistades), end='\n\n')
 
     print("Prueba de grafica_aleatoria")
-    print(grafica_aleatoria(5, 0.5), end='\n\n')
+    print(grafica_aleatoria(5, 1.0), end='\n\n')
