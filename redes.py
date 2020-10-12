@@ -29,7 +29,7 @@ def numero_nodos(red):
 
     Retorno
     -------
-    n : Entero
+    nodos : Entero
         El número de nodos de la red.
 
     """
@@ -57,13 +57,13 @@ def calcula_grados(red):
     Excepción
     ---------
     TypeError
-        Se lanza cuando no recibe un diccionario como parámetro
+        Se lanza cuando no recibe un diccionario como parámetro.
 
     Retorno
     -------
     deg : Diccionario
-        Las llaves representasn los nodos de la res y los valores son el
-        grado de entrada del nodo
+        Las llaves representasn los nodos de la red y los valores son el
+        grado de entrada del nodo.
 
     """
 
@@ -118,7 +118,7 @@ def grado_maximo(red):
 # Práctica 1 ==================================================================
 
 
-def crea_un_grafo_completo(nodos):
+def crea_grafo_completo(nodos):
     """
     Recibe un número entero para regresar un grafo del tipo K_n.
     (todos los nodos están relacionados entre ellos.)
@@ -147,11 +147,11 @@ def crea_un_grafo_completo(nodos):
     # validación del parámetro de entrada
     if not isinstance(nodos, int):
         raise TypeError("el parámetro que recibe " +
-                        "crea_un_grafo_completo() tiene que ser un entero " +
+                        "crea_grafo_completo() tiene que ser un entero " +
                         "positivo.")
     if nodos < 1:
         raise ValueError("el parámetro que recibe " +
-                         "crea_un_grafo_completo() tiene que ser mayor a " +
+                         "crea_grafo_completo() tiene que ser mayor a " +
                          "cero.")
 
     # el grafo vacío
@@ -617,7 +617,7 @@ def grafica_distr_norm_salida(distr_norm):
 # Extras tarea 2 ==============================================================
 
 
-def aristas(red):
+def tamagno(red):
     """
     Recibe un diccionario que representa una gráfica y regresa el número de
     aristas que tiene.
@@ -635,7 +635,7 @@ def aristas(red):
 
     Retorno
     -------
-    ari : Entero
+    aristas : Entero
         Es el número de arista de la red que entro como parámetro.
 
     """
@@ -649,11 +649,11 @@ def aristas(red):
     deg_in = calcula_grados_de_entrada(red)
 
     # se ocupa el agloritmo para saber las arista o enlaces de la red
-    ari = int(sum(list(deg_in.values())) / 2)
-    return ari
+    aristas = int(sum(list(deg_in.values())) / 2)
+    return aristas
 
 
-def aristas_grafo_completo(nodos):
+def tamagno_grafo_completo(nodos):
     """
     Recibe un número entero que es el número de nodos de un grafo del tipo K_n.
 
@@ -671,7 +671,7 @@ def aristas_grafo_completo(nodos):
 
     Retorno
     -------
-    ari : Entero
+    aristas : Entero
         Es el número de arista de la de la gráfica completa.
 
     """
@@ -679,17 +679,17 @@ def aristas_grafo_completo(nodos):
     # validación del parámetro de entrada
     if not isinstance(nodos, int):
         raise TypeError("el parámetro que recibe " +
-                        "crea_un_grafo_completo() tiene que ser un entero " +
+                        "tamagno_grafo_completo() tiene que ser un entero " +
                         "positivo.")
     if nodos < 1:
         raise ValueError("el parámetro que recibe " +
-                         "crea_un_grafo_completo() tiene que ser mayor a " +
+                         "tamagno_grafo_completo() tiene que ser mayor a " +
                          "cero.")
 
     # se ocupa el algoritmo
-    ari = int(nodos * (nodos - 1) / 2)
+    aristas = int(nodos * (nodos - 1) / 2)
 
-    return ari
+    return aristas
 
 
 # tarea 2 =====================================================================
@@ -725,10 +725,13 @@ def densidad(red):
     # gráfo y de su grágo completo
     nodos = numero_nodos(red)
 
-    m_g = aristas(red)
-    m_kn = aristas_grafo_completo(nodos)
+    m_g = tamagno(red)
+    m_kn = tamagno_grafo_completo(nodos)
 
-    dens = m_g / m_kn  # se calcula la densidad
+    try:
+        dens = m_g / m_kn  # se calcula la densidad
+    except:
+        dens = 0.0
 
     return dens
 
@@ -808,11 +811,255 @@ def grafica_aleatoria(nodos, probabilidad):
 # tarea/práctica actual
 # =============================================================================
 
+def crea_red_regular(nodos, grado):
+    
+    # validación del parámetro nodos
+    if not isinstance(nodos, int):
+        raise TypeError("el parámetro 'nodos' que recibe crea_red_regular " + 
+                        "tiene que ser un entero.")
+    if nodos < 3:
+        raise ValueError("el parámetro 'nodos' que recibe crea_red_regular" + 
+                         " tiene que ser mayor o igual a 3.")
+   
+    # validación del parámetro grado
+    if not isinstance(grado, int):
+        raise TypeError("el parámetro 'grado' que recibe crea_red_regular " + 
+                        "tiene que ser un entero.")
+    if grado < 2:
+        raise ValueError("el parámetro 'grado' que recibe crea_red_regular" + 
+                     " tiene que ser mayor o igual a 2.")
+    
+    # validación de condiciones
+    if nodos <= grado:
+        raise ValueError("el valor del parámetro 'nodos' tiene que se menor" + 
+                         " al valor del parámetro 'grado'")
+    
+    # atajo
+    if grado == nodos - 1:
+        return crea_grafo_completo(nodos)
+    
+    # distancia
+    dis = grado//2
+    
+    # una lista con los nodos
+    nodos = list(range(nodos))
+    
+    # la red que se regresará
+    red = dict()
+    
+    #for nodo in nodos:
+    #    ady = set()
+    #    try:
+    #        a = nodo + 1
+    #        ady.add(nodos[a])
+    #    except IndentationError:
+    #        a = nodo + 1 - len(nodos)
+    #        ady.add(nodos[a])
+    #    
+    #    try:
+    #        a = nodo - 1
+    #        ady.add(nodos[a])
+    #    except IndentationError:
+    #        a = nodo + 1 - len(nodos)
+    #        ady.add(nodos[a])
+    #        
+    #    red[nodo] = ady
+            
+    return red
+     
+    
+
+    
+def crea_mundo_pequeno(): #nodos, grado, prob, 
+    # Watts-Strogatz
+    
+    pass
+
+
+def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
+    """
+    Esta función regresa una diccionario que representa una red de escala 
+    libre, modelo de Albert-Barábasi.
+    
+
+    Parámetros
+    ----------
+    nodos_iniciales : Entero
+        La cantidad de nodos con los que inicia la red. esta red es una 
+        gráfica completa. Tiene que ser igual o mayor a 1
+    iteraciones : Entero
+        la cantidad de nuevos nodos que se añadirán a la red. en cada iteración
+        se agrega un nuevo nodo. Tiene que ser positivo
+    enlaces_nuevos : Entero
+        La cantidad de nuevos enlaces que forma el nuevo nodo en cada 
+        iteración. Tiene que ser positivo
+
+    Excepciones
+    -----------
+    TypeError
+        Se lanza cundo cualquiera de los parámetros no es un entero.
+    ValueError
+        Se lanza cuando cualquiera del parámetros es menor a 1 o cuando el
+        parámetro 'enlaces_nuevos' es mayor a el parámetro 'nodos_iniciales'.
+
+    Retorno
+    -------
+    escala_libre : Diccionario
+        Las llaves representasn los nodos de la red y los valores son conjunto
+        de los nodos conectados.
+
+    """
+    
+    # validación de los parámetros de entrada
+    
+    # validación de nodos_iniciales
+    if not isinstance(nodos_iniciales, int):
+        raise TypeError("el parámtro 'nodos_iniciales' que recibe" +
+                        " crea_red_escala_libre tiene que ser un entero")
+    if nodos_iniciales < 1:
+        raise ValueError("el parámetro 'nodos_iniciales' que recibe" +
+                         " crea_red_escala_libre no puede ser menor a 1.")
+        
+    # validación de iteraciones
+    if not isinstance(iteraciones, int):
+        raise TypeError("el parámtro 'iteraciones' que recibe" +
+                        " crea_red_escala_libre tiene que ser un entero")
+    if iteraciones < 1:
+        raise ValueError("el parámetro 'iteraciones' que recibe" +
+                         " crea_red_escala_libre no puede ser menor a 1.")
+        
+    # validación de enlaces_nuevos
+    if not isinstance(enlaces_nuevos, int):
+        raise TypeError("el parámtro 'enlaces_nuevos' que recibe" +
+                        " crea_red_escala_libre tiene que ser un entero")
+    if enlaces_nuevos < 1:
+        raise ValueError("el parámetro 'enlaces_nuevos' que recibe" +
+                         " crea_red_escala_libre no puede ser menor a 1.")
+    if enlaces_nuevos > nodos_iniciales:
+        raise ValueError("el parámetro 'enlaces_nuevos' que recibe" +
+                         " crea_red_escala_libre no puede mayor al " +
+                         "parámetro 'nodos_iniciales'.")
+   
+    # creamos una red completa
+    escala_libre = crea_grafo_completo(nodos_iniciales)
+    
+    # esta es la llave del nuevo nodo
+    nuevo_nodo = nodos_iniciales    
+    
+    # iteraciones del algoritmo de Albert-Barábasi
+    for i in range(iteraciones):
+        
+        # de la red calculamos: su tamaño, los grados de sus nodos y las 
+        # probabilidades
+        tam = tamagno(escala_libre)
+        grados = calcula_grados(escala_libre) # diccionario con los grados
+        
+        # calculamos la probabilidades de cada nodo
+        prob_nodos = dict()
+        for nodo, grado in grados.items():
+            try:
+                prob_nodos[nodo] = grado / (2 * tam)
+            except:
+                prob_nodos[nodo] = 1.0
+            
+        # agregamos el nuevo nudo pero aun no tiene conecciones
+        escala_libre[nuevo_nodo] = set()
+        
+        # Descartado. reiniciar el bucle no creo que se la forma correcta, 
+        # los últimos nodos no tiene las mismas posibilidades ya de por si 
+        # ocurre el efecto Mateo
+        # # itentamos hacer conecciones hasta que estén todas
+        # enlaces_faltantes = enlaces_nuevos
+        # while enlaces_faltantes:
+        #     for nodo, prob in prob_nodos.items():
+        #         aleatorio = random.random()
+        #         if aleatorio < prob:
+        #             escala_libre[nuevo_nodo].add(nodo)
+        #             escala_libre[nodo].add(nuevo_nodo)
+        #             enlaces_faltantes -= 1
+        #             prob_nodos.pop(nodo)
+        #             break # durante la iteración no se permite modificar el
+        #                   # tamñao del diccionario por eso el break
+
+       
+        # Creo que es la mejor manera que se me ocurre. es algo rebuscada pero
+        # es lo que se puede hacer con las limitadas funciones del modulo 
+        # ramdom, existe la función choices que toma k elementos de una lista, 
+        # y se les puede dar pesos a ellos, pero toma los elementos con 
+        # remplazo (es posible repetir el mismo elemento)
+        # la función sample permite sacar elementos aleatoreamente de una lista
+        # pero no maneja pesos. Asi que usé choices sacando un solo un 
+        # elemento y retirandolo de la lista y repeir el procedimiento.
+
+           
+        # # hacemos una una las conecciones
+        enlaces_faltantes = enlaces_nuevos
+        while enlaces_faltantes:
+            
+            nodos = list(prob_nodos.keys())
+            probabilides = list(prob_nodos.values())
+            
+            # se eleige un nodo al azar, este regresa como una lista de un 
+            # elemento
+            nodo_destino = random.choices(nodos, weights=probabilides, k=1)
+            
+            # desempaquetamos el elemtno de la lista y hacemos las conecciones
+            nodo_destino = nodo_destino[0]
+            escala_libre[nuevo_nodo].add(nodo_destino)
+            escala_libre[nodo_destino].add(nuevo_nodo)
+            
+            # sacamos el nodo que se conecto para que no se repita
+            prob_nodos.pop(nodo_destino)
+            
+            enlaces_faltantes -= 1
+        
+        # debug: para ver como cambia la red
+        # print(i, ":\n", escala_libre)
+        
+        # aumentamo nuevo nodo para la prixima iteración
+        nuevo_nodo += 1
+    
+    return escala_libre
+
+
+# #############################################################################
+
+# print(crea_red_regular(5, 2))
+# print(crea_red_escala_libre(2, 10, 2))
+
+for i in range(5):
+    g = grafica_aleatoria(15, 0.3)
+    print("Gráfica ", i+1, "es :", g)
+    print("Su densidad es :", densidad(g))
+    dist = dist_grados_de_entrada(g)
+    print("su distribucón de grados de entrada es :")
+    dist = dist_grados_de_entrada(g)
+    grafica_distr_entrada(dist)
+    print("Su distrubución normalizada es:")
+    dist_n = dist_normalizada_entrada(g)
+    grafica_distr_norm_entrada(dist_n)
+    print("")
+    
+for i in range(5):
+    g = crea_red_escala_libre(2, 13, 2)
+    print("Gráfica ", i+1, "es :", g)
+    print("Su densidad es :", densidad(g))
+    dist = dist_grados_de_entrada(g)
+    print("su distribucón de grados de entrada es :")
+    dist = dist_grados_de_entrada(g)
+    grafica_distr_entrada(dist)
+    print("Su distrubución normalizada es:")
+    dist_n = dist_normalizada_entrada(g)
+    grafica_distr_norm_entrada(dist_n)
+    print("")
+    
+
+
 # =============================================================================
 # pruebas
 # =============================================================================
 
-if __name__ == "__main__":
+if not __name__ == "__main__":
 
     # una gráfica
     _amistades = {'Alicia': {'Beto', 'Carlos', 'Carmen', 'David', 'Mónica'},
@@ -840,8 +1087,8 @@ if __name__ == "__main__":
     print(grado_maximo(_amistades), end='\n\n')
 
     # pruebas práctica 1 -----------------------------------------------------
-    print("Prueba de crea_un_grafo_completo")
-    print(crea_un_grafo_completo(5), end='\n\n')
+    print("Prueba de crea_grafo_completo")
+    print(crea_grafo_completo(5), end='\n\n')
 
     print("Prueba de calcula_grados_de_entrada")
     print(calcula_grados_de_entrada(_graf1), end='\n\n')
@@ -879,10 +1126,10 @@ if __name__ == "__main__":
     # pruebas tarea 2 extras -------------------------------------------------
 
     print("Prueba de aristas")
-    print(aristas(_amistades), end='\n\n')
+    print(tamagno(_amistades), end='\n\n')
 
     print("Prueba de aristas_grafo_completo")
-    print(aristas_grafo_completo(5), end='\n\n')
+    print(tamagno_grafo_completo(5), end='\n\n')
 
     # pruebas tarea 2 ---------------------------------------------------------
     print("Prueba de densidad")
