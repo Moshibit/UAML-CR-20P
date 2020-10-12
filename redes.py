@@ -642,7 +642,7 @@ def tamagno(red):
 
     # validación de parámetros de entrada
     if not isinstance(red, dict):
-        raise TypeError("el parámetro que recibe densidad() tiene que ser " +
+        raise TypeError("el parámetro que recibe tamagno() tiene que ser " +
                         "un diccionario.")
 
     # se calcula los grados de entrada de los nodos de la red
@@ -952,7 +952,7 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
         # calculamos de la red : su tamaño, los grados de sus nodos y las 
         # probabilidades de hacer nuevas conecciones
         tam = tamagno(escala_libre)
-        grados = calcula_grados(escala_libre) # diccionario con los grados
+        grados = calcula_grados_de_entrada(escala_libre) # dicc. con los grados
         
         # calculamos la probabilidades de cada nodo
         prob_nodos = dict()
