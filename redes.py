@@ -886,18 +886,18 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
     ----------
     nodos_iniciales : Entero
         La cantidad de nodos con los que inicia la red. esta red es una 
-        gráfica completa. Tiene que ser igual o mayor a 1
+        gráfica completa. Tiene que ser igual o mayor a 1.
     iteraciones : Entero
-        la cantidad de nuevos nodos que se añadirán a la red. en cada iteración
-        se agrega un nuevo nodo. Tiene que ser positivo
+        la cantidad de nuevos nodos que se añadirán a la red, en cada iteración
+        se agrega un nuevo nodo. Tiene que ser positivo.
     enlaces_nuevos : Entero
         La cantidad de nuevos enlaces que forma el nuevo nodo en cada 
-        iteración. Tiene que ser positivo
+        iteración. Tiene que ser positivo.
 
     Excepciones
     -----------
     TypeError
-        Se lanza cundo cualquiera de los parámetros no es un entero.
+        Se lanza cuando cualquiera de los parámetros no es un entero.
     ValueError
         Se lanza cuando cualquiera del parámetros es menor a 1 o cuando el
         parámetro 'enlaces_nuevos' es mayor a el parámetro 'nodos_iniciales'.
@@ -905,8 +905,8 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
     Retorno
     -------
     escala_libre : Diccionario
-        Las llaves representasn los nodos de la red y los valores son conjunto
-        de los nodos conectados.
+        Las llaves representasn los nodos de la red y los valores son un 
+        conjunto de los nodos conectados.
 
     """
     
@@ -940,7 +940,7 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
                          " crea_red_escala_libre no puede mayor al " +
                          "parámetro 'nodos_iniciales'.")
    
-    # creamos una red completa
+    # una red completa
     escala_libre = crea_grafo_completo(nodos_iniciales)
     
     # esta es la llave del nuevo nodo
@@ -949,8 +949,8 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
     # iteraciones del algoritmo de Albert-Barábasi
     for i in range(iteraciones):
         
-        # de la red calculamos: su tamaño, los grados de sus nodos y las 
-        # probabilidades
+        # calculamos de la red : su tamaño, los grados de sus nodos y las 
+        # probabilidades de hacer nuevas conecciones
         tam = tamagno(escala_libre)
         grados = calcula_grados(escala_libre) # diccionario con los grados
         
@@ -962,7 +962,7 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
             except:
                 prob_nodos[nodo] = 1.0
             
-        # agregamos el nuevo nudo pero aun no tiene conecciones
+        # agregamos el nuevo nodo, aun no tiene conecciones
         escala_libre[nuevo_nodo] = set()
         
         # Descartado. reiniciar el bucle no creo que se la forma correcta, 
@@ -982,24 +982,24 @@ def crea_red_escala_libre(nodos_iniciales, iteraciones, enlaces_nuevos):
         #                   # tamñao del diccionario por eso el break
 
        
-        # Creo que es la mejor manera que se me ocurre. es algo rebuscada pero
+        # Creo que es la mejor manera que se me ocurre, es algo rebuscada pero
         # es lo que se puede hacer con las limitadas funciones del modulo 
-        # ramdom, existe la función choices que toma k elementos de una lista, 
-        # y se les puede dar pesos a ellos, pero toma los elementos con 
-        # remplazo (es posible repetir el mismo elemento)
-        # la función sample permite sacar elementos aleatoreamente de una lista
+        # ramdom, la función choices() toma k elementos de una lista, a cada 
+        # elemento se les puede dar pesos, pero toma los elementos con 
+        # remplazo (es posible repetir el mismo elemento). por otro lado la 
+        # función sample() permite sacar elementos aleatoreamente de una lista
         # pero no maneja pesos. Asi que usé choices sacando un solo un 
-        # elemento y retirandolo de la lista y repeir el procedimiento.
+        # elemento y retirandolo de la lista y repetir el procedimiento.
 
            
-        # # hacemos una una las conecciones
+        # # hacemos una a una las conecciones
         enlaces_faltantes = enlaces_nuevos
         while enlaces_faltantes:
             
             nodos = list(prob_nodos.keys())
             probabilides = list(prob_nodos.values())
             
-            # se eleige un nodo al azar, este regresa como una lista de un 
+            # se elige un nodo al azar, este regresa como una lista de un 
             # elemento
             nodo_destino = random.choices(nodos, weights=probabilides, k=1)
             
